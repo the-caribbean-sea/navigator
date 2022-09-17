@@ -33,7 +33,7 @@ func (r *router) Just(pattern string,
 	return r
 }
 
-// Many registers many handler mappings to a pattern, the handlers are varied according to different methods
+// Many registers many handlers mapping to a pattern, the handlers are varied according to different methods
 func (r *router) Many(pattern string, mappings ...Mapping) Router {
 	r.register(pattern, r.compose(Many(mappings...)))
 	return r

@@ -17,7 +17,7 @@ type mapping map[string]func(w http.ResponseWriter, r *http.Request)
 // Methods holds methods waiting for a handler
 type Methods []string
 
-// Many creates a [Mapping] out of the given set of [Mappabe]s
+// Many creates a [Mapping] out of the given set of [Mapping]s
 func Many(mappings ...Mapping) Mapping {
 	m := mapping{}
 	for _, other := range mappings {
