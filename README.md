@@ -49,7 +49,7 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	navi.NewRoute(http.HandleFunc).
+	navi.Navigate(http.HandleFunc).
 		Just("/auth", authorize, http.MethodPost).
 		// following handlers will have the [authorized] method to check before handling
 		MustAuthorized(authorized).
