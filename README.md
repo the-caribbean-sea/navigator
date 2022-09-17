@@ -1,6 +1,8 @@
 # Introduction
 
-This is a simple and (*of course as it is simple, hence*) lightweight approach to gracefully compose http server routes.
+This is a `simple` and (*of course as it is simple, hence*) `lightweight` approach to gracefully compose http server routes.
+
+> Call me router-ish~~mael~~
 
 # Example
 ```go
