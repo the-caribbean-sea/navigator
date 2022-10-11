@@ -18,11 +18,11 @@ func authorize(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Token", "I-Am-The-Token")
 }
 
-func authorized(w http.ResponseWriter, r *http.Request) int {
+func authorized(w http.ResponseWriter, r *http.Request) (int, *http.Request) {
 	if r.Header.Get("Token") != "I-Am-The-Token" {
-		return http.StatusUnauthorized
+		return http.StatusUnauthorized, nil
 	}
-	return 0
+	return 0, r
 }
 
 func list(w http.ResponseWriter, r *http.Request) {
@@ -37,11 +37,11 @@ func gen2(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("2"))
 }
 
-func privileged(w http.ResponseWriter, r *http.Request) int {
+func privileged(w http.ResponseWriter, r *http.Request) (int, *http.Request) {
 	if r.Header.Get("Token") != "I-Am-The-Privileged" {
-		return http.StatusForbidden
+		return http.StatusForbidden, nil
 	}
-	return 0
+	return 0, r
 }
 
 func admin(w http.ResponseWriter, r *http.Request) {
