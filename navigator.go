@@ -4,14 +4,16 @@ import "net/http"
 
 // Router defines a routes builder
 type Router interface {
-	MustAuthorized(checker func(http.ResponseWriter, *http.Request) int) Router
-	Just(pattern string, handler func(http.ResponseWriter, *http.Request), methods ...string) Router
+	MustAuthorized(checker func(
+		http.ResponseWriter, *http.Request) (int, *http.Request)) Router
+	Just(pattern string, handler func(
+		http.ResponseWriter, *http.Request), methods ...string) Router
 	Many(pattern string, mappings ...Mapping) Router
 }
 
 // router implements the [Router] interface
 type router struct {
-	checker  func(http.ResponseWriter, *http.Request) int
+	checker  func(http.ResponseWriter, *http.Request) (int, *http.Request)
 	register func(string, func(http.ResponseWriter, *http.Request))
 }
 
@@ -21,7 +23,8 @@ func Navigate(register func(string, func(http.ResponseWriter, *http.Request))) R
 }
 
 // MustAuthorized sets the authorization method for the following [Just] or [Many] registrations
-func (r *router) MustAuthorized(checker func(http.ResponseWriter, *http.Request) int) Router {
+func (r *router) MustAuthorized(checker func(
+	http.ResponseWriter, *http.Request) (int, *http.Request)) Router {
 	r.checker = checker
 	return r
 }

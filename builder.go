@@ -8,7 +8,8 @@ type Mapping interface {
 	Compose() func(w http.ResponseWriter, r *http.Request)
 	// Authorized composes a new handler with the given authorization method
 	Authorized(authorization func(
-		w http.ResponseWriter, r *http.Request) int) func(w http.ResponseWriter, r *http.Request)
+		w http.ResponseWriter, r *http.Request) (int, *http.Request)) func(
+		w http.ResponseWriter, r *http.Request)
 	fill(m mapping)
 }
 
@@ -43,11 +44,18 @@ func (m mapping) Compose() func(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m mapping) Authorized(authorization func(
-	w http.ResponseWriter, r *http.Request) int) func(w http.ResponseWriter, r *http.Request) {
+	w http.ResponseWriter, r *http.Request) (int, *http.Request)) func(
+	w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if status := authorization(w, r); status != 0 {
+		status, nr := authorization(w, r)
+		if status != 0 {
 			w.WriteHeader(status)
 			return
+		}
+
+		// accept the new *http.Request if any
+		if nr != nil {
+			r = nr
 		}
 
 		if handle, ok := m[r.Method]; ok {
